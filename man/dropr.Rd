@@ -21,8 +21,8 @@ dropr is used to drop a list of variables from a dataframe (and to keep the rest
 dropr is used internally by the fsm package.
 }
 \examples{
-fs36idfrac01
-mydf <- dropr(mydf = fs36idfrac01, "dur_fare", "yor_fare", "tor_fare", "bra_fare", "mis_fare", "oak_fare", "mil_fare", "bur_fare", "ham_fare")
+mydf <- mtcars
+mydf <- dropr(mydf, "am", "gear", "carb")
 mydf
 
 }

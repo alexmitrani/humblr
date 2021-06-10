@@ -4,7 +4,7 @@
 # 20200917 v1 03 by Alex Mitrani. Simplified the return lines at the end.
 # 20210104 v1 04 by Alex Mitrani, Added Roxygen skeleton and started adding documentation content.
 # 20210108 v1 05 by Alex Mitrani, Improved example.
-# 20210125 v1 06 by Alex Mitrani, Added information about object size before and after removing variables and RAM saved.  
+# 20210125 v1 06 by Alex Mitrani, Added information about object size before and after removing variables and RAM saved.
 
 #' @name dropr
 #' @title drops a specified list of variables and keeps the rest
@@ -19,29 +19,29 @@
 #' @export
 #'
 #' @examples
-#' fs36idfrac01
-#' mydf <- dropr(mydf = fs36idfrac01, "dur_fare", "yor_fare", "tor_fare", "bra_fare", "mis_fare", "oak_fare", "mil_fare", "bur_fare", "ham_fare")
+#' mydf <- mtcars
+#' mydf <- dropr(mydf, "am", "gear", "carb")
 #' mydf
 #'
 
 dropr <- function(mydf,...) {
 
   my_return_name <- deparse(substitute(mydf))
-  
+
   myinitialsize <- round(object.size(mydf)/1000000, digits = 3)
   cat(paste0("Size of ", my_return_name, " before removing variables: ", myinitialsize, " MB. \n"))
-  
+
   names_to_drop <- c(...)
   mytext <- paste("The following variables will be dropped from ", my_return_name, ": ", sep = "")
   print(mytext)
   print(names_to_drop)
   mydf <- mydf[,!names(mydf) %in% names_to_drop]
-  
+
   myfinalsize <- round(object.size(mydf)/1000000, digits = 3)
   cat(paste0("Size of ", my_return_name, " after removing variables: ", myfinalsize, " MB. \n"))
   ramsaved <- round(myinitialsize - myfinalsize, digits = 3)
   cat(paste0("RAM saved: ", ramsaved, " MB. \n"))
-  
+
   return(mydf)
 
 }

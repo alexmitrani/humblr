@@ -21,9 +21,9 @@ compressr is used to reduce the size of data files with double-precision storage
 compressr is used internally by the fsm package.
 }
 \examples{
-fs36idfrac01
-mycompressrvars <- scan(text="accs_mode ach ampeak auto_access auto_driver auto_egress auto_fp auto_passenger autodistkm_blank autopassenger available bra_in_tord bra_in_toro car_pool choice cross905 dcat10 ddkm dest_purp dkm2 dqkm dtkm dur_in_tord dur_in_toro egrs_mode exclude exclude_90000s exclude_mum exclude_nochoice exclude_not_in_gghm exclude_oneorless exclude_orig_eq_dest exclude_outside_gtha exclude_walk fp free_park_n ggh_dest ggh_orig ggh_orig2 ggh_pd_d ggh_pd_o ggh_region_d ggh_region_o go_only gobus gobus_iv_dist_blank gobus1km18d gobus1km18o gomsptrip gorail gorail_iv_dist_blank gorail1km18d gorail1km18o gorail1km41d gorail1km41o gotrain gotrip gozoned gozoneo gta06_dest gta06_hhld gta06_orig gta06_orig2 gtha hamlrt1km41d hamlrt1km41o hulrt1km41d hulrt1km41o id inboundingbox income internal intrazonal local local_iv_dist_blank mis_in_tord mis_in_toro mo3 mode mode_option mode1 mode10 mode101 mode102 mode11 mode12 mode2 mode3 mode4 mode5 mode6 mode7 mode702 mode703 mode8 mode804 mode805 mode9 mode906 modecat3 modechoice modechoice2 msp_d msp_o n_licence n_pers_trip n_person n_vehicle nearestgotaz_d nearestgotaz_o nhb_cd ocat10 occupn odcat odcat15 odcat15a odcat7 odcat8 orig_purp pd_d pd_hhld pd_o pnrzone primary_mode ptauto purp_cat purp_cat2 region_d region_dest region_o region_orig start_time stat_emp subway subway_iv_distkm subway1km16d subway1km16o subway1km18d subway1km18o sumach sumoption totach totoptions tran_pass_n transit transit_odc1 transit_odc2 transit_odc3 transit_odc4 transit_odc5 transit_odc6 transit_odc7 transit_odc8 ttc905 tysse1km18d tysse1km18o urban walk_distance withinmsp yor_fare yor_in_tord yor_in_toro yse1km41d yse1km41o", what="")
-fs36idfrac01 <- compressr(mydf = fs36idfrac01, mycompressrvars)
-fs36idfrac01
+mydf <- mtcars
+mycompressrvars <- scan(text="vs am gear carb", what="")
+mydf <- compressr(mydf, mycompressrvars)
+mydf
 
 }

@@ -21,8 +21,8 @@ keepr is used to keep a list of variables in a dataframe (and to drop the rest).
 keepr is used internally by the fsm package.
 }
 \examples{
-fs36idfrac01
-mydf <- keepr(mydf = fs36idfrac01, "id", "mode_option", "choice")
+mydf <- mtcars
+mydf <- keepr(mydf, "mpg", "cyl", "displ")
 mydf
 
 }
