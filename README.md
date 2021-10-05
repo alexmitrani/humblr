@@ -1,2 +1,2 @@
 # humblr
-Provides a Few Humble Tools for R
+Provides a few humble tools for R.
