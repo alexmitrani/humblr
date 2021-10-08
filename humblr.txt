@@ -1,9 +1,11 @@
 <NotepadPlus>
     <Project name="humblr">
+        <File name="DESCRIPTION" />
         <File name="R\chunkr.R" />
         <File name="R\compressr.R" />
         <File name="R\datestampr.R" />
         <File name="R\dropr.R" />
         <File name="R\keepr.R" />
+        <File name="R\hypercuber.R" />
     </Project>
 </NotepadPlus>

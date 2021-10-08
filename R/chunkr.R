@@ -32,7 +32,7 @@ chunkr <- function(mydf, nchunks = 1L, ...) {
   cat(yellow("\n", "chunkr.R running with the following command line:", outputlabel, "\n \n"))
   
   #sense checks
-  stopifnot(is_integer(nchunks)==TRUE)
+  stopifnot(is.integer(nchunks)==TRUE)
   stopifnot(nchunks>=1L)
   
   my_return_name <- deparse(substitute(mydf))
