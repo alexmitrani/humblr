@@ -18,12 +18,23 @@
 #' @export
 #'
 #' @examples
-#' mytest1 <- hypercuber(myname = "mytest1", myseed = myseed, myn=120, myk=12, myalgorithm = "randomLHS")
-#' mytest2 <- hypercuber(myseed, n=120, k=12, "optimumLHS", mymaxsweeps = 4, myeps = 0.01)
-#' mytest3 <- hypercuber(myseed, n=120, k=12, "maximinLHS", mydup = 5)
-#' mytest4 <- hypercuber(myseed, n=120, k=12, "improvedLHS", mydup = 5)
-#' mytest5 <- hypercuber(myseed, n=120, k=12, "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S")
-#' mytest6 <- hypercuber(myseed, n=120, k=12, "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "Maximin")
+#' mytest1 <- hypercuber(myname = "mytest1", myn=10, myk=5, myalgorithm = "randomLHS")
+#' mytest1
+#' 
+#' mytest2 <- hypercuber(myname = "mytest2", myn=10, myk=5, myalgorithm = "optimumLHS", mymaxsweeps = 4, myeps = 0.01)
+#' mytest2
+#' 
+#' mytest3 <- hypercuber(myname = "mytest3", n=10, k=5, "maximinLHS", mydup = 5)
+#' mytest3
+#' 
+#' mytest4 <- hypercuber(myname = "mytest4", n=10, k=5, "improvedLHS", mydup = 5)
+#' mytest4
+#' 
+#' mytest5 <- hypercuber(myname = "mytest5", n=10, k=5, "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S")
+#' mytest5
+#' 
+#' mytest6 <- hypercuber(myname = "mytest6", n=10, k=5, "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "Maximin")
+#' mytest6
 #'
 
 hypercuber <- function(myname = NULL, myseed = 123456789, myn = 99, myk = 9, myalgorithm = "randomLHS", mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S", mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
