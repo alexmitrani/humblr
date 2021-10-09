@@ -12,6 +12,9 @@
 #' @description keepr is used to keep a list of variables in a dataframe (and to drop the rest).  Inspired by the "keep" command in Stata.
 #' @details keepr is used internally by the fsm package.
 #'
+#' @import tidyverse
+#' @import crayon
+#' @import rlang
 #'
 #' @param mydf the dataframe to be modified.
 #' @param ... a list of the variables to be kept.

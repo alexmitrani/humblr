@@ -11,6 +11,9 @@
 #' @description dropr is used to drop a list of variables from a dataframe (and to keep the rest).  Inspired by the "drop" command in Stata.
 #' @details dropr is used internally by the fsm package.
 #'
+#' @import tidyverse
+#' @import crayon
+#' @import rlang
 #'
 #' @param mydf the dataframe to be modified.
 #' @param ... a list of the variables to be dropped.

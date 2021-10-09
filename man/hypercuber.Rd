@@ -6,7 +6,7 @@
 \usage{
 hypercuber(
   myname = NULL,
-  myseed = 123456789,
+  myseed = 12345L,
   myn = 99,
   myk = 9,
   myalgorithm = "randomLHS",
@@ -50,16 +50,16 @@ mytest1
 mytest2 <- hypercuber(myname = "mytest2", myn=10, myk=5, myalgorithm = "optimumLHS", mymaxsweeps = 4, myeps = 0.01)
 mytest2
 
-mytest3 <- hypercuber(myname = "mytest3", n=10, k=5, "maximinLHS", mydup = 5)
+mytest3 <- hypercuber(myname = "mytest3", myn=10, myk=5, myalgorithm = "maximinLHS", mydup = 5)
 mytest3
 
-mytest4 <- hypercuber(myname = "mytest4", n=10, k=5, "improvedLHS", mydup = 5)
+mytest4 <- hypercuber(myname = "mytest4", myn=10, myk=5, myalgorithm = "improvedLHS", mydup = 5)
 mytest4
 
-mytest5 <- hypercuber(myname = "mytest5", n=10, k=5, "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S")
+mytest5 <- hypercuber(myname = "mytest5", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S")
 mytest5
 
-mytest6 <- hypercuber(myname = "mytest6", n=10, k=5, "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "Maximin")
+mytest6 <- hypercuber(myname = "mytest6", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "Maximin")
 mytest6
 
 }

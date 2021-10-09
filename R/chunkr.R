@@ -6,10 +6,10 @@
 #' @description splits a dataset into a specified number of chunks so that they can be processed sequentially
 #' @details The splitting is done in terms of units defined by the combinations of the levels of one or more variables.
 #' Any output files will be produced in .rds format.
-#'
-#'
+#' 
 #' @import tidyverse
 #' @import crayon
+#' @import rlang
 #'
 #' @param mydf the dataframe to be used.
 #' @param nchunks an integer target number of chunks in which the dataframe is to be split (1 <= nchunks <= N) where N is the number of units.  
