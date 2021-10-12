@@ -2,6 +2,7 @@
 # Version history
 # 20211008 v1 01 by Alex Mitrani.  First version.
 # 20211012 v1 02 by Alex Mitrani.  Added criterium to the list of summary outputs.  
+# 20211012 v1 03 by Alex Mitrani.  Set most arguments to NULL by default.  
 
 #' @name hypercuber
 #' @title a wrapper for the lhs package
@@ -42,7 +43,7 @@
 #' mytest6
 #'
 
-hypercuber <- function(myname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgorithm = "randomLHS", mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S", mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
+hypercuber <- function(myname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgorithm = "randomLHS", mymaxsweeps = NULL, myeps = NULL, mydup = NULL, mypop = NULL, mygen = NULL, mypmut = NULL, mycriterium = NULL, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
 
   datestring <- datestampr(myusername=TRUE)
 
