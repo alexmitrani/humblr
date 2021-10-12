@@ -1,6 +1,7 @@
 
 # Version history
 # 20211008 v1 01 by Alex Mitrani.  First version.
+# 20211012 v1 02 by Alex Mitrani.  Added criterium to the list of summary outputs.  
 
 #' @name hypercuber
 #' @title a wrapper for the lhs package
@@ -98,27 +99,31 @@ hypercuber <- function(myname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgo
   png(myfilename, width = mygraphsize, height = mygraphsize)
   pairs(mymatrix, pch = mypch, col = mycol, cex = mycex)
   dev.off()
+  
+  criterium <- mycriterium
 
   seed <- myseed
   c1 <- as.data.frame(seed)
 
   type <- myalgorithm
   c2 <- as.data.frame(type)
+  
+  c3 <- as.data.frame(criterium)
 
   min_dist <- min(dist(mymatrix))
-  c3 <- as.data.frame(min_dist)
+  c4 <- as.data.frame(min_dist)
 
   mean_dist <- mean(dist(mymatrix))
-  c4 <- as.data.frame(mean_dist)
+  c5 <- as.data.frame(mean_dist)
 
   max_corr <- c(max(abs(cor(mymatrix)-diag(myk))))
-  c5 <- as.data.frame(max_corr)
+  c6 <- as.data.frame(max_corr)
 
   mydf1 <- as.data.frame(mymatrix) %>%
     mutate(id = row_number()) %>%
     relocate(id)
 
-  mydf2 <- cbind(c1, c2, c3, c4, c5)
+  mydf2 <- cbind(c1, c2, c3, c4, c5, c6)
 
   mylist <- list(mydf1, mydf2)
 
