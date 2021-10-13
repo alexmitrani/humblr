@@ -27,9 +27,25 @@ lhs_sampling(
 
 \item{myseed}{the random number seed to be used}
 
-\item{myk}{the number of variables}
+\item{mymaxsweeps}{see lhs package documentation}
 
-\item{myalgorithm}{the optimisation algorithm to be used: "randomLHS", "optimumLHS", "maximinLHS", "improvedLHS", or "geneticLHS".}
+\item{myeps}{see lhs package documentation}
+
+\item{mydup}{see lhs package documentation}
+
+\item{mypop}{see lhs package documentation}
+
+\item{mygen}{see lhs package documentation}
+
+\item{mypmut}{see lhs package documentation}
+
+\item{mygraphsize}{pixel dimension to be used for scatter graph matrices. see "width" and "height" in png {grDevices}.}
+
+\item{mypch}{see "pch" in par {graphics}}
+
+\item{mycol}{see "col" in par {graphics}}
+
+\item{mycex}{see "cex" in par {graphics}}
 }
 \value{
 

@@ -1,5 +1,6 @@
 # Version history
 # 20211013 v1 01 by Alex Mitrani.  First version.
+# 20211013 v1 02 by Alex Mitrani.  Improvements to documentation.
 
 #' @name lhs_sampling
 #' @title generates a Latin hypercube based on inputs provided in an Excel spreadsheet.
@@ -24,8 +25,16 @@
 #' @param myfilename is the name of the input Excel file
 #' @param mytestspervariable the number of tests per variable in the input file
 #' @param myseed the random number seed to be used
-#' @param myk the number of variables
-#' @param myalgorithm the optimisation algorithm to be used: "randomLHS", "optimumLHS", "maximinLHS", "improvedLHS", or "geneticLHS".
+#' @param mymaxsweeps see lhs package documentation
+#' @param myeps see lhs package documentation
+#' @param mydup see lhs package documentation
+#' @param mypop see lhs package documentation
+#' @param mygen see lhs package documentation
+#' @param mypmut see lhs package documentation
+#' @param mygraphsize pixel dimension to be used for scatter graph matrices. see "width" and "height" in png {grDevices}.
+#' @param mypch see "pch" in par {graphics}
+#' @param mycol see "col" in par {graphics}
+#' @param mycex see "cex" in par {graphics}
 #'
 #' @return
 #' @export
