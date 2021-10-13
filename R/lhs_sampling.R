@@ -2,7 +2,7 @@
 # 20211013 v1 01 by Alex Mitrani.  First version.
 
 #' @name lhs_sampling
-#' @title a wrapper for the lhs package
+#' @title generates a Latin hypercube based on inputs provided in an Excel spreadsheet.
 #' @description facilitates the generation of a Latin hypercubes for a set of variables based on inputs specified in a spreadsheet table.
 #' @details The spreadsheet should have only one sheet with the following columns and one row for each variable to be simulated:
 #' - Index (numeric)

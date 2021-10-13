@@ -2,7 +2,7 @@
 % Please edit documentation in R/lhs_sampling.R
 \name{lhs_sampling}
 \alias{lhs_sampling}
-\title{a wrapper for the lhs package}
+\title{generates a Latin hypercube based on inputs provided in an Excel spreadsheet.}
 \usage{
 lhs_sampling(
   myfilename = NULL,
