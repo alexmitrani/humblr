@@ -3,7 +3,7 @@
 # 20211008 v1 01 by Alex Mitrani.  First version.
 # 20211012 v1 02 by Alex Mitrani.  Added criterium to the list of summary outputs.
 # 20211012 v1 03 by Alex Mitrani.  Set most arguments to NULL by default.
-# 20211013 v1 04 by Alex Mitrani.  Added elapsed_time.
+# 20211013 v1 04 by Alex Mitrani.  Added more details to the output.
 
 #' @name hypercuber
 #' @title a wrapper for the lhs package
@@ -43,8 +43,7 @@
 #' mytest6
 #'
 
-hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgorithm = "randomLHS", mymaxsweeps = NULL, myeps = NULL, mydup = NULL, mypop = NULL, mygen = NULL, mypmut = NULL, mycriterium = "NA", mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
-
+hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgorithm = "randomLHS", mymaxsweeps = "NA", myeps = "NA", mydup = "NA", mypop = "NA", mygen = "NA", mypmut = "NA", mycriterium = "NA", mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
 
   datestring <- datestampr(myusername=TRUE)
 
@@ -58,44 +57,27 @@ hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, m
   # set the seed for reproducibility
   set.seed(myseed)
 
-  now1 <- Sys.time()
-
   if (myalgorithm == "randomLHS") {
 
     mymatrix <- randomLHS(n = myn, k = myk)
 
   } else if (myalgorithm == "optimumLHS") {
 
-    stopifnot(is.null(mymaxsweeps)==FALSE)
-    stopifnot(is.null(myeps)==FALSE)
-
     mymatrix <- optimumLHS(n = myn, k = myk, maxSweeps = mymaxsweeps, eps = myeps)
 
   } else if (myalgorithm == "maximinLHS") {
-
-    stopifnot(is.null(mydup)==FALSE)
 
     mymatrix <- maximinLHS(n = myn, k = myk, dup = mydup)
 
   } else if (myalgorithm == "improvedLHS") {
 
-    stopifnot(is.null(mydup)==FALSE)
-
     mymatrix <- improvedLHS(n = myn, k = myk, dup = mydup)
 
   } else if (myalgorithm == "geneticLHS") {
 
-    stopifnot(is.null(mypop)==FALSE)
-    stopifnot(is.null(mygen)==FALSE)
-    stopifnot(is.null(mypmut)==FALSE)
-    stopifnot(is.null(mycriterium)==FALSE)
-
     mymatrix <- geneticLHS(n = myn, k = myk, pop = mypop, gen = mygen, pMut = mypmut, criterium = mycriterium)
 
   }
-
-  now2 <- Sys.time()
-  elapsed_time <- now2 - now1
 
   cat(yellow("\n", "Min Distance btween pts:", min(dist(mymatrix)), "\n \n"))
   cat(yellow("\n", "Mean Distance btween pts:", mean(dist(mymatrix)), "\n \n"))
@@ -107,32 +89,48 @@ hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, m
   pairs(mymatrix, pch = mypch, col = mycol, cex = mycex)
   dev.off()
 
-  criterium <- mycriterium
-
   seed <- myseed
   c1 <- as.data.frame(seed)
 
   type <- myalgorithm
   c2 <- as.data.frame(type)
+  
+  # mymaxsweeps = "NA", myeps = "NA", mydup = "NA", mypop = "NA", mygen = "NA", mypmut = "NA"
+  maxsweeps <- mymaxsweeps
+  c3 <- as.data.frame(maxsweeps)
+  
+  eps <- myeps
+  c4 <- as.data.frame(eps)
+  
+  dup <- mydup
+  c5 <- as.data.frame(dup)
+  
+  pop <- mypop
+  c6 <- as.data.frame(pop)
+  
+  gen <- mygen
+  c7 <- as.data.frame(gen)    
+  
+  pmut <- mypmut
+  c8 <- as.data.frame(pmut)      
 
-  c3 <- as.data.frame(criterium)
+  criterium <- mycriterium
+  c9 <- as.data.frame(criterium)
 
   min_dist <- min(dist(mymatrix))
-  c4 <- as.data.frame(min_dist)
+  c10 <- as.data.frame(min_dist)
 
   mean_dist <- mean(dist(mymatrix))
-  c5 <- as.data.frame(mean_dist)
+  c11 <- as.data.frame(mean_dist)
 
   max_corr <- c(max(abs(cor(mymatrix)-diag(myk))))
-  c6 <- as.data.frame(max_corr)
+  c12 <- as.data.frame(max_corr)
 
   mydf1 <- as.data.frame(mymatrix) %>%
     mutate(id = row_number()) %>%
     relocate(id)
 
-  c7 <- as.data.frame(elapsed_time)
-
-  mydf2 <- cbind(c1, c2, c3, c4, c5, c6, c7)
+  mydf2 <- cbind(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12)
 
   mylist <- list(mydf1, mydf2)
 

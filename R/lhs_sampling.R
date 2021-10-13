@@ -1,6 +1,7 @@
 # Version history
 # 20211013 v1 01 by Alex Mitrani.  First version.
 # 20211013 v1 02 by Alex Mitrani.  Improvements to documentation.
+# 20211013 v1 03 by Alex Mitrani.  Improvements to graph names.
 
 #' @name lhs_sampling
 #' @title generates a Latin hypercube based on inputs provided in an Excel spreadsheet.
@@ -49,7 +50,8 @@
 lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12345L, mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
 
 
-  now0 <- Sys.time()
+  # required packages -------------------------------------------------------
+
 
   # work --------------------------------------------------------------------
 
@@ -77,32 +79,32 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
 
   }
 
-  mygraphname <- paste0(datestring, "_A1")
+  mygraphname <- paste0(datestring, "_randomLHS")
   mytest1 <- hypercuber(mygraphname = mygraphname, myseed = myseed, myn=nruns, myk=nvar, myalgorithm = "randomLHS", mygraphsize = mygraphsize, mypch = mypch, mycol = mycol, mycex = mycex)
   mydf1 <- as.data.frame(mytest1[1])
   sum1 <- as.data.frame(mytest1[2])
 
-  mygraphname <- paste0(datestring, "_A2")
+  mygraphname <- paste0(datestring, "_optimumLHS")
   mytest2 <- hypercuber(mygraphname = mygraphname, myseed, myn=nruns, myk=nvar, myalgorithm = "optimumLHS", mymaxsweeps = mymaxsweeps, myeps = myeps, mygraphsize = mygraphsize, mypch = mypch, mycol = mycol, mycex = mycex)
   mydf2 <- as.data.frame(mytest2[1])
   sum2 <- as.data.frame(mytest2[2])
 
-  mygraphname <- paste0(datestring, "_A3")
+  mygraphname <- paste0(datestring, "_maximinLHS")
   mytest3 <- hypercuber(mygraphname = mygraphname, myseed, myn=nruns, myk=nvar, myalgorithm = "maximinLHS", mydup = mydup, mygraphsize = mygraphsize, mypch = mypch, mycol = mycol, mycex = mycex)
   mydf3 <- as.data.frame(mytest3[1])
   sum3 <- as.data.frame(mytest3[2])
 
-  mygraphname <- paste0(datestring, "_A4")
+  mygraphname <- paste0(datestring, "_improvedLHS")
   mytest4 <- hypercuber(mygraphname = mygraphname, myseed, myn=nruns, myk=nvar, myalgorithm = "improvedLHS", mydup = mydup, mygraphsize = mygraphsize, mypch = mypch, mycol = mycol, mycex = mycex)
   mydf4 <- as.data.frame(mytest4[1])
   sum4 <- as.data.frame(mytest4[2])
 
-  mygraphname <- paste0(datestring, "_A5")
+  mygraphname <- paste0(datestring, "_geneticLHSS")
   mytest5 <- hypercuber(mygraphname = mygraphname, myseed, myn=nruns, myk=nvar, myalgorithm = "geneticLHS", mypop = mypop, mygen = mygen, mypmut = mypmut, mycriterium = "S", mygraphsize = mygraphsize, mypch = mypch, mycol = mycol, mycex = mycex)
   mydf5 <- as.data.frame(mytest5[1])
   sum5 <- as.data.frame(mytest5[2])
 
-  mygraphname <- paste0(datestring, "_A6")
+  mygraphname <- paste0(datestring, "_geneticLHSS")
   mytest6 <- hypercuber(mygraphname = mygraphname, myseed, myn=nruns, myk=nvar, myalgorithm = "geneticLHS", mypop = mypop, mygen = mygen, mypmut = mypmut, mycriterium = "Maximin", mygraphsize = mygraphsize, mypch = mypch, mycol = mycol, mycex = mycex)
   mydf6 <- as.data.frame(mytest6[1])
   sum6 <- as.data.frame(mytest6[2])
@@ -120,14 +122,17 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
   if(best_option == "randomLHS") {
 
     mydfname <- rlang::sym(paste0("mydf1"))
+    mygraphname <- "randomLHS"
 
   } else if (best_option == "optimumLHS") {
 
     mydfname <- rlang::sym(paste0("mydf2"))
+    mygraphname <- "optimumLHS"
 
   } else if (best_option == "maximinLHS") {
 
     mydfname <- rlang::sym(paste0("mydf3"))
+    mygraphname <- "maximinLHS"
 
   } else if (best_option == "improvedLHS") {
 
@@ -136,10 +141,12 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
   } else if (best_option == "geneticLHS" & criterium == "S") {
 
     mydfname <- rlang::sym(paste0("mydf5"))
+    mygraphname <- "geneticLHSS"
 
   } else if (best_option == "geneticLHS" & criterium == "Maximin") {
 
     mydfname <- rlang::sym(paste0("mydf6"))
+    mygraphname <- "geneticLHSM"
 
   }
 
@@ -271,7 +278,7 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
 
   }
 
-  mygraphfilename <- paste0(datestring, "_B.png")
+  mygraphfilename <- paste0(datestring, "_", mygraphname, ".png")
   png(mygraphfilename, width = mygraphsize, height = mygraphsize)
   pairs(B, pch = mypch, col = mycol, cex = mycex)
   dev.off()
@@ -352,12 +359,6 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
   }
 
   print(gc())
-
-  nowx <- Sys.time()
-  cat(yellow(paste0("lhs_sampling.R run finished at ", nowx, "\n \n")))
-  elapsed_time <- nowx - now0
-  print(elapsed_time)
-
 
   return(optimisation_summary)
 
