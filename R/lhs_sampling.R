@@ -2,6 +2,8 @@
 # 20211013 v1 01 by Alex Mitrani.  First version.
 # 20211013 v1 02 by Alex Mitrani.  Improvements to documentation.
 # 20211013 v1 03 by Alex Mitrani.  Improvements to graph names.
+# 20211013 v1 04 by Alex Mitrani.  Added "selected" to the optimisation summary table.  
+# 20211013 v1 05 by Alex Mitrani.  Improvements to documentation.
 
 #' @name lhs_sampling
 #' @title generates a Latin hypercube based on inputs provided in an Excel spreadsheet.
@@ -16,6 +18,17 @@
 #' - Maximum (numeric)
 #' - Distribution (character) - Uniform, Triangular, or PERT.
 #' - Shape (numeric) - only needed if distribution is "PERT"
+#' 
+#' Six types of optimisation algorithm are tested: 
+#' - randomLHS
+#' - optimumLHS
+#' - maximinLHS
+#' - improvedLHS
+#' - geneticsLHS - genetic algorithm with "S" criterium
+#' - geneticmLHS - genetic algorithm with "Maximin" criterium
+#' 
+#' The algorithm that minimises the maximum correlation ("max_corr") is selected to produce the recommended Latin hypercube.  
+#' The details of the selected algorithm and the other algorithms tested are added to the sheet "optimisation_summary" of the results workbook.
 #'
 #' @import tidyverse
 #' @import crayon
@@ -49,11 +62,6 @@
 
 lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12345L, mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
 
-
-  # required packages -------------------------------------------------------
-
-
-  # work --------------------------------------------------------------------
 
   datestring <- datestampr(myusername=TRUE)
   logrun <- TRUE
@@ -99,12 +107,12 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
   mydf4 <- as.data.frame(mytest4[1])
   sum4 <- as.data.frame(mytest4[2])
 
-  mygraphname <- paste0(datestring, "_geneticLHSS")
+  mygraphname <- paste0(datestring, "_geneticsLHS")
   mytest5 <- hypercuber(mygraphname = mygraphname, myseed, myn=nruns, myk=nvar, myalgorithm = "geneticLHS", mypop = mypop, mygen = mygen, mypmut = mypmut, mycriterium = "S", mygraphsize = mygraphsize, mypch = mypch, mycol = mycol, mycex = mycex)
   mydf5 <- as.data.frame(mytest5[1])
   sum5 <- as.data.frame(mytest5[2])
 
-  mygraphname <- paste0(datestring, "_geneticLHSS")
+  mygraphname <- paste0(datestring, "_geneticmLHS")
   mytest6 <- hypercuber(mygraphname = mygraphname, myseed, myn=nruns, myk=nvar, myalgorithm = "geneticLHS", mypop = mypop, mygen = mygen, mypmut = mypmut, mycriterium = "Maximin", mygraphsize = mygraphsize, mypch = mypch, mycol = mycol, mycex = mycex)
   mydf6 <- as.data.frame(mytest6[1])
   sum6 <- as.data.frame(mytest6[2])
@@ -112,9 +120,10 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
   # produce a table to compare the tests
   optimisation_summary <- rbind(sum1, sum2, sum3, sum4, sum5, sum6)
 
-  # sort the summary dataframe in ascending order of maximum correlation
+  # sort the summary dataframe in ascending order of maximum correlation and indicate the selected option
   optimisation_summary <- optimisation_summary %>%
-    arrange(max_corr)
+    arrange(max_corr) %>%
+    mutate(selected = ifelse(row_number()==1,1,0))
 
   # define the best option as being that with the minimum value of maximum correlation
   best_option <- as.character(optimisation_summary[1,2])
@@ -141,12 +150,12 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
   } else if (best_option == "geneticLHS" & criterium == "S") {
 
     mydfname <- rlang::sym(paste0("mydf5"))
-    mygraphname <- "geneticLHSS"
+    mygraphname <- "geneticsLHS"
 
   } else if (best_option == "geneticLHS" & criterium == "Maximin") {
 
     mydfname <- rlang::sym(paste0("mydf6"))
-    mygraphname <- "geneticLHSM"
+    mygraphname <- "geneticmLHS"
 
   }
 
@@ -337,7 +346,7 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
   addWorksheet(wb, sheetname)
   writeData(wb, sheetname, mydf6)
 
-  sheetname <- "optimumLHS_various"
+  sheetname <- "selectedLHS_various"
   addWorksheet(wb, sheetname)
   writeData(wb, sheetname, mydf7)
 
