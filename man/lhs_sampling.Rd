@@ -66,6 +66,19 @@ The spreadsheet should have only one sheet with the following columns and one ro
 \item Distribution (character) - Uniform, Triangular, or PERT.
 \item Shape (numeric) - only needed if distribution is "PERT"
 }
+
+Six types of optimisation algorithm are tested:
+\itemize{
+\item randomLHS
+\item optimumLHS
+\item maximinLHS
+\item improvedLHS
+\item geneticsLHS - genetic algorithm with "S" criterium
+\item geneticmLHS - genetic algorithm with "Maximin" criterium
+}
+
+The algorithm that minimises the maximum correlation ("max_corr") is selected to produce the recommended Latin hypercube.
+The details of the selected algorithm and the other algorithms tested are added to the sheet "optimisation_summary" of the results workbook.
 }
 \examples{
 myinputfile <- system.file("extdata", "Risk variable distributions for Latin Hypercube sample.xlsx", package = "humblr")
