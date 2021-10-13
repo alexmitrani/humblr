@@ -11,7 +11,6 @@
 #'
 #' @import tidyverse
 #' @import crayon
-#' @import rlang
 #' @import lhs
 #'
 #' @param myname is the name to be used to name output files
@@ -24,32 +23,32 @@
 #' @export
 #'
 #' @examples
-#' mytest1 <- hypercuber(myname = "mytest1", myn=10, myk=5, myalgorithm = "randomLHS")
+#' mytest1 <- hypercuber(mygraphname = "mytest1", myn=10, myk=5, myalgorithm = "randomLHS")
 #' mytest1
 #'
-#' mytest2 <- hypercuber(myname = "mytest2", myn=10, myk=5, myalgorithm = "optimumLHS", mymaxsweeps = 4, myeps = 0.01)
+#' mytest2 <- hypercuber(mygraphname = "mytest2", myn=10, myk=5, myalgorithm = "optimumLHS", mymaxsweeps = 4, myeps = 0.01)
 #' mytest2
 #'
-#' mytest3 <- hypercuber(myname = "mytest3", myn=10, myk=5, myalgorithm = "maximinLHS", mydup = 5)
+#' mytest3 <- hypercuber(mygraphname = "mytest3", myn=10, myk=5, myalgorithm = "maximinLHS", mydup = 5)
 #' mytest3
 #'
-#' mytest4 <- hypercuber(myname = "mytest4", myn=10, myk=5, myalgorithm = "improvedLHS", mydup = 5)
+#' mytest4 <- hypercuber(mygraphname = "mytest4", myn=10, myk=5, myalgorithm = "improvedLHS", mydup = 5)
 #' mytest4
 #'
-#' mytest5 <- hypercuber(myname = "mytest5", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S")
+#' mytest5 <- hypercuber(mygraphname = "mytest5", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S")
 #' mytest5
 #'
-#' mytest6 <- hypercuber(myname = "mytest6", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "Maximin")
+#' mytest6 <- hypercuber(mygraphname = "mytest6", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "Maximin")
 #' mytest6
 #'
 
-hypercuber <- function(myname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgorithm = "randomLHS", mymaxsweeps = NULL, myeps = NULL, mydup = NULL, mypop = NULL, mygen = NULL, mypmut = NULL, mycriterium = "NA", mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
+hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgorithm = "randomLHS", mymaxsweeps = NULL, myeps = NULL, mydup = NULL, mypop = NULL, mygen = NULL, mypmut = NULL, mycriterium = "NA", mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
 
   datestring <- datestampr(myusername=TRUE)
 
-  if (is.null(myname)==TRUE) {
+  if (is.null(mygraphname)==TRUE) {
 
-    myname <- datestring
+    mygraphname <- datestring
 
   }
 
@@ -95,9 +94,9 @@ hypercuber <- function(myname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgo
   cat(yellow("\n", "Mean Distance btween pts:", mean(dist(mymatrix)), "\n \n"))
   cat(yellow("\n", "Max Correlation btween pts:", max(abs(cor(mymatrix)-diag(myk))), "\n \n"))
 
-  myfilename <- paste0(myname, ".png")
+  mygraphfilename <- paste0(mygraphname, ".png")
 
-  png(myfilename, width = mygraphsize, height = mygraphsize)
+  png(mygraphfilename, width = mygraphsize, height = mygraphsize)
   pairs(mymatrix, pch = mypch, col = mycol, cex = mycex)
   dev.off()
 

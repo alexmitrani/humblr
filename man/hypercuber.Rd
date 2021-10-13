@@ -5,7 +5,7 @@
 \title{a wrapper for the lhs package}
 \usage{
 hypercuber(
-  myname = NULL,
+  mygraphname = NULL,
   myseed = 12345L,
   myn = 99,
   myk = 9,
@@ -24,8 +24,6 @@ hypercuber(
 )
 }
 \arguments{
-\item{myname}{is the name to be used to name output files}
-
 \item{myseed}{the random number seed to be used}
 
 \item{myn}{the number of draws}
@@ -33,6 +31,8 @@ hypercuber(
 \item{myk}{the number of variables}
 
 \item{myalgorithm}{the optimisation algorithm to be used: "randomLHS", "optimumLHS", "maximinLHS", "improvedLHS", or "geneticLHS".}
+
+\item{myname}{is the name to be used to name output files}
 }
 \value{
 
@@ -44,22 +44,22 @@ facilitates the generation of Latin hypercubes, graphs the results, and returns 
 based on the examples in the lhs help documentation
 }
 \examples{
-mytest1 <- hypercuber(myname = "mytest1", myn=10, myk=5, myalgorithm = "randomLHS")
+mytest1 <- hypercuber(mygraphname = "mytest1", myn=10, myk=5, myalgorithm = "randomLHS")
 mytest1
 
-mytest2 <- hypercuber(myname = "mytest2", myn=10, myk=5, myalgorithm = "optimumLHS", mymaxsweeps = 4, myeps = 0.01)
+mytest2 <- hypercuber(mygraphname = "mytest2", myn=10, myk=5, myalgorithm = "optimumLHS", mymaxsweeps = 4, myeps = 0.01)
 mytest2
 
-mytest3 <- hypercuber(myname = "mytest3", myn=10, myk=5, myalgorithm = "maximinLHS", mydup = 5)
+mytest3 <- hypercuber(mygraphname = "mytest3", myn=10, myk=5, myalgorithm = "maximinLHS", mydup = 5)
 mytest3
 
-mytest4 <- hypercuber(myname = "mytest4", myn=10, myk=5, myalgorithm = "improvedLHS", mydup = 5)
+mytest4 <- hypercuber(mygraphname = "mytest4", myn=10, myk=5, myalgorithm = "improvedLHS", mydup = 5)
 mytest4
 
-mytest5 <- hypercuber(myname = "mytest5", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S")
+mytest5 <- hypercuber(mygraphname = "mytest5", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "S")
 mytest5
 
-mytest6 <- hypercuber(myname = "mytest6", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "Maximin")
+mytest6 <- hypercuber(mygraphname = "mytest6", myn=10, myk=5, myalgorithm = "geneticLHS", mypop = 1000, mygen = 8, mypmut = 0.1, mycriterium = "Maximin")
 mytest6
 
 }
