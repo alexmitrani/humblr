@@ -4,6 +4,7 @@
 # 20211012 v1 02 by Alex Mitrani.  Added criterium to the list of summary outputs.
 # 20211012 v1 03 by Alex Mitrani.  Set most arguments to NULL by default.
 # 20211013 v1 04 by Alex Mitrani.  Added more details to the output.
+# 20211013 v1 05 by Alex Mitrani.  Added elapsed_time.
 
 #' @name hypercuber
 #' @title a wrapper for the lhs package
@@ -56,6 +57,8 @@ hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, m
   myseed <- as.integer(myseed)
   # set the seed for reproducibility
   set.seed(myseed)
+  
+  now1 <- Sys.time()
 
   if (myalgorithm == "randomLHS") {
 
@@ -78,6 +81,9 @@ hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, m
     mymatrix <- geneticLHS(n = myn, k = myk, pop = mypop, gen = mygen, pMut = mypmut, criterium = mycriterium)
 
   }
+  
+  now2 <- Sys.time()
+  elapsed_time <- now2 - now1
 
   cat(yellow("\n", "Min Distance btween pts:", min(dist(mymatrix)), "\n \n"))
   cat(yellow("\n", "Mean Distance btween pts:", mean(dist(mymatrix)), "\n \n"))
@@ -125,12 +131,14 @@ hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, m
 
   max_corr <- c(max(abs(cor(mymatrix)-diag(myk))))
   c12 <- as.data.frame(max_corr)
+  
+  c13 <- as.data.frame(elapsed_time)
 
   mydf1 <- as.data.frame(mymatrix) %>%
     mutate(id = row_number()) %>%
     relocate(id)
 
-  mydf2 <- cbind(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12)
+  mydf2 <- cbind(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13)
 
   mylist <- list(mydf1, mydf2)
 
