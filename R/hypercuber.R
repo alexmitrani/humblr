@@ -3,6 +3,7 @@
 # 20211008 v1 01 by Alex Mitrani.  First version.
 # 20211012 v1 02 by Alex Mitrani.  Added criterium to the list of summary outputs.
 # 20211012 v1 03 by Alex Mitrani.  Set most arguments to NULL by default.
+# 20211013 v1 04 by Alex Mitrani.  Added elapsed_time.
 
 #' @name hypercuber
 #' @title a wrapper for the lhs package
@@ -44,6 +45,7 @@
 
 hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, myalgorithm = "randomLHS", mymaxsweeps = NULL, myeps = NULL, mydup = NULL, mypop = NULL, mygen = NULL, mypmut = NULL, mycriterium = "NA", mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
 
+
   datestring <- datestampr(myusername=TRUE)
 
   if (is.null(mygraphname)==TRUE) {
@@ -55,6 +57,8 @@ hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, m
   myseed <- as.integer(myseed)
   # set the seed for reproducibility
   set.seed(myseed)
+
+  now1 <- Sys.time()
 
   if (myalgorithm == "randomLHS") {
 
@@ -90,6 +94,9 @@ hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, m
 
   }
 
+  now2 <- Sys.time()
+  elapsed_time <- now2 - now1
+
   cat(yellow("\n", "Min Distance btween pts:", min(dist(mymatrix)), "\n \n"))
   cat(yellow("\n", "Mean Distance btween pts:", mean(dist(mymatrix)), "\n \n"))
   cat(yellow("\n", "Max Correlation btween pts:", max(abs(cor(mymatrix)-diag(myk))), "\n \n"))
@@ -123,7 +130,9 @@ hypercuber <- function(mygraphname = NULL, myseed = 12345L, myn = 99, myk = 9, m
     mutate(id = row_number()) %>%
     relocate(id)
 
-  mydf2 <- cbind(c1, c2, c3, c4, c5, c6)
+  c7 <- as.data.frame(elapsed_time)
+
+  mydf2 <- cbind(c1, c2, c3, c4, c5, c6, c7)
 
   mylist <- list(mydf1, mydf2)
 

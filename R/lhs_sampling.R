@@ -49,8 +49,7 @@
 lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12345L, mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
 
 
-  # required packages -------------------------------------------------------
-
+  now0 <- Sys.time()
 
   # work --------------------------------------------------------------------
 
@@ -353,6 +352,12 @@ lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12
   }
 
   print(gc())
+
+  nowx <- Sys.time()
+  cat(yellow(paste0("lhs_sampling.R run finished at ", nowx, "\n \n")))
+  elapsed_time <- nowx - now0
+  print(elapsed_time)
+
 
   return(optimisation_summary)
 
