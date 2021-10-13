@@ -4,8 +4,9 @@
 # 20211013 v1 03 by Alex Mitrani.  Improvements to graph names.
 # 20211013 v1 04 by Alex Mitrani.  Added "selected" to the optimisation summary table.  
 # 20211013 v1 05 by Alex Mitrani.  Improvements to documentation.
+# 20211013 v1 06 by Alex Mitrani.  Cjhanged name to "samplr"
 
-#' @name lhs_sampling
+#' @name samplr
 #' @title generates a Latin hypercube based on inputs provided in an Excel spreadsheet.
 #' @description facilitates the generation of a Latin hypercubes for a set of variables based on inputs specified in a spreadsheet table.
 #' @details The spreadsheet should have only one sheet with the following columns and one row for each variable to be simulated:
@@ -55,12 +56,12 @@
 #'
 #' @examples
 #' myinputfile <- system.file("extdata", "Risk variable distributions for Latin Hypercube sample.xlsx", package = "humblr")
-#' mytest1 <- lhs_sampling(myinputfile, mytestspervariable = 10, myseed = 12345L, mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5)
+#' mytest1 <- samplr(myinputfile, mytestspervariable = 10, myseed = 12345L, mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5)
 #' mytest1
 #'
 
 
-lhs_sampling <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12345L, mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
+samplr <- function(myfilename = NULL, mytestspervariable = 10, myseed = 12345L, mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5) {
 
 
   datestring <- datestampr(myusername=TRUE)
