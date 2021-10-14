@@ -7,5 +7,6 @@
         <File name="R\dropr.R" />
         <File name="R\keepr.R" />
         <File name="R\hypercuber.R" />
+        <File name="R\samplr.R" />
     </Project>
 </NotepadPlus>
