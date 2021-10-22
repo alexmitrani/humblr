@@ -51,7 +51,7 @@ samplr(
 
 }
 \description{
-facilitates the generation of a Latin hypercubes for a set of variables based on inputs specified in a spreadsheet table.
+facilitates the generation of a Latin hypercube for a set of variables based on inputs specified in a spreadsheet table.
 }
 \details{
 The spreadsheet should have only one sheet with the following columns and one row for each variable to be simulated:
@@ -81,7 +81,7 @@ The algorithm that minimises the maximum correlation ("max_corr") is selected to
 The details of the selected algorithm and the other algorithms tested are added to the sheet "optimisation_summary" of the results workbook.
 }
 \examples{
-myinputfile <- system.file("extdata", "Risk variable distributions for Latin Hypercube sample.xlsx", package = "humblr")
+myinputfile <- system.file("extdata", "risk_variable_distributions.xlsx", package = "humblr")
 mytest1 <- samplr(myinputfile, mytestspervariable = 10, myseed = 12345L, mymaxsweeps = 4, myeps = 0.01, mydup = 5, mypop = 1000, mygen = 8, mypmut = 0.1, mygraphsize = 1000, mypch = 19, mycol = "blue", mycex = 0.5)
 mytest1
 
