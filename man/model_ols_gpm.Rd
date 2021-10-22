@@ -7,6 +7,7 @@
 model_ols_gpm(
   myinputspreadsheet = NULL,
   myinputdatasheet = NULL,
+  mytag = NULL,
   mypredictionsheet = NULL,
   myresponse_ols = NULL,
   myresponse_gpm = "residuals",
@@ -24,6 +25,8 @@ model_ols_gpm(
 \item{myinputspreadsheet}{is the name of the spreadsheet with the input data.}
 
 \item{myinputdatasheet}{the name of the sheet with the input data.}
+
+\item{mytag}{a character string that will be used in the output file names.  #'}
 
 \item{mypredictionsheet}{(optional) the name of a sheet containing test data to which the model should be applied.}
 
@@ -57,8 +60,8 @@ produces a model with Ordinary Least Squares (OLS) and Gaussian Process Model (G
 The spreadsheet requires at least one sheet, that must contain the dependent and independent variables.
 }
 \examples{
-
-
+myinputfile <- system.file("extdata", "model_ols_gpm_test.xlsx", package = "humblr")
+mytestmodel <- model_ols_gpm(myinputspreadsheet = myinputfile, myinputdatasheet = "data", mypredictionsheet = "prediction_tests", mytag = "model_ols_gpm_test", myresponse_ols = "depvar", myresponse_gpm = "residuals", myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10"), sigmafrom = 1, sigmato= 10, sigmaby = 1, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000)
 
 
 }

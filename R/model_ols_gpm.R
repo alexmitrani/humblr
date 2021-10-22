@@ -15,6 +15,7 @@
 #' @param myinputspreadsheet is the name of the spreadsheet with the input data.
 #' @param myinputdatasheet the name of the sheet with the input data.
 #' @param mypredictionsheet (optional) the name of a sheet containing test data to which the model should be applied.
+#' @param mytag a character string that will be used in the output file names.  #'
 #' @param myterms a character vector containing the names of the independent variables.
 #' @param sigmafrom the lower limit of the test range for sigma
 #' @param sigmato the upper limit of the test range for sigma
@@ -30,26 +31,23 @@
 #' @export
 #'
 #' @examples
+#' myinputfile <- system.file("extdata", "model_ols_gpm_test.xlsx", package = "humblr")
+#' mytestmodel <- model_ols_gpm(myinputspreadsheet = myinputfile, myinputdatasheet = "data", mypredictionsheet = "prediction_tests", mytag = "model_ols_gpm_test", myresponse_ols = "depvar", myresponse_gpm = "residuals", myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10"), sigmafrom = 1, sigmato= 10, sigmaby = 1, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000)
 #'
 #'
-#'
-#'
-model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, mypredictionsheet = NULL, myresponse_ols = NULL, myresponse_gpm = "residuals", myterms = NULL, sigmafrom = 0.01, sigmato= 2, sigmaby = 0.01, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000) {
-
-  # myinputfile <- system.file("extdata", "model_ols_gpm_test.xlsx", package = "humblr")
-  # mytestmodel <- model_ols_gpm(myinputspreadsheet = myinputfile, myinputdatasheet = "data", mypredictionsheet = "prediction_tests", myresponse_ols = "depvar", myresponse_gpm = "residuals", myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10"), sigmafrom = 0.01, sigmato= 10, sigmaby = 0.01, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000)
-
+model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, mytag = NULL, mypredictionsheet = NULL, myresponse_ols = NULL, myresponse_gpm = "residuals", myterms = NULL, sigmafrom = 0.01, sigmato= 2, sigmaby = 0.01, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000) {
 
 # Version register --------------------------------------------------------
 
   # 20211021 v1 01 by Alex Mitrani, initial version.
   # 20211022 v1 02 by Alex Mitrani, documented version.
+  # 20211022 v1 03 by Alex Mitrani, put example back in.
 
 # Top ---------------------------------------------------------------------
 
   now1 <- Sys.time()
   datestring <- datestampr(myusername=TRUE)
-  myinputspreadsheetprefix <- str_replace(myinputspreadsheet,".xlsx","")
+  myinputspreadsheetprefix <- mytag
 
   logrun <- TRUE
 
