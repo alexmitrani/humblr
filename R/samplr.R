@@ -2,13 +2,14 @@
 # 20211013 v1 01 by Alex Mitrani.  First version.
 # 20211013 v1 02 by Alex Mitrani.  Improvements to documentation.
 # 20211013 v1 03 by Alex Mitrani.  Improvements to graph names.
-# 20211013 v1 04 by Alex Mitrani.  Added "selected" to the optimisation summary table.
+# 20211013 v1 04 by Alex Mitrani.  Added "selected" to the optimisation summary table.  
 # 20211013 v1 05 by Alex Mitrani.  Improvements to documentation.
 # 20211013 v1 06 by Alex Mitrani.  Changed name to "samplr"
+# 20211022 v1 07 by Alex Mitrani.  Minor corrections.
 
 #' @name samplr
 #' @title generates a Latin hypercube based on inputs provided in an Excel spreadsheet.
-#' @description facilitates the generation of a Latin hypercubes for a set of variables based on inputs specified in a spreadsheet table.
+#' @description facilitates the generation of a Latin hypercube for a set of variables based on inputs specified in a spreadsheet table.
 #' @details The spreadsheet should have only one sheet with the following columns and one row for each variable to be simulated:
 #' - Index (numeric)
 #' - Variable (character)
@@ -19,16 +20,16 @@
 #' - Maximum (numeric)
 #' - Distribution (character) - Uniform, Triangular, or PERT.
 #' - Shape (numeric) - only needed if distribution is "PERT"
-#'
-#' Six types of optimisation algorithm are tested:
+#' 
+#' Six types of optimisation algorithm are tested: 
 #' - randomLHS
 #' - optimumLHS
 #' - maximinLHS
 #' - improvedLHS
 #' - geneticsLHS - genetic algorithm with "S" criterium
 #' - geneticmLHS - genetic algorithm with "Maximin" criterium
-#'
-#' The algorithm that minimises the maximum correlation ("max_corr") is selected to produce the recommended Latin hypercube.
+#' 
+#' The algorithm that minimises the maximum correlation ("max_corr") is selected to produce the recommended Latin hypercube.  
 #' The details of the selected algorithm and the other algorithms tested are added to the sheet "optimisation_summary" of the results workbook.
 #'
 #' @import tidyverse
