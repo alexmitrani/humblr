@@ -43,6 +43,7 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   # 20211022 v1 02 by Alex Mitrani, documented version.
   # 20211022 v1 03 by Alex Mitrani, put example back in.
   # 20211025 v1 04 by Alex Mitrani, Moved "cat(yellow(paste0("Sigma = ", mysigma, " produced the smallest value of RMSE out of all the values of sigma tested in the range from ", sigmafrom, " to ", sigmato, ". \n \n")))" and "stopifnot((mysigma > sigmafrom) & (mysigma < sigmato))" to model_gpm.
+  # 20211025 v1 05 by Alex Mitrani, Added type = "response": "mutate(gpm_prediction = predict(mygpm, mypredictiondf, type = "response"))"
 
 # Top ---------------------------------------------------------------------
 
@@ -128,7 +129,7 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
 
     mypredictiondf <- mypredictiondf %>%
       mutate(ols_prediction = predict(myolsmodel, mypredictiondf)) %>%
-      mutate(gpm_prediction = predict(mygpm, mypredictiondf)) %>%
+      mutate(gpm_prediction = predict(mygpm, mypredictiondf, type = "response")) %>%
       mutate(prediction = ols_prediction + gpm_prediction) %>%
       mutate(id = row_number()) %>%
       relocate(id)
