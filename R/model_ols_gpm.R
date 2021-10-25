@@ -42,6 +42,7 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   # 20211021 v1 01 by Alex Mitrani, initial version.
   # 20211022 v1 02 by Alex Mitrani, documented version.
   # 20211022 v1 03 by Alex Mitrani, put example back in.
+  # 20211025 v1 04 by Alex Mitrani, Moved "cat(yellow(paste0("Sigma = ", mysigma, " produced the smallest value of RMSE out of all the values of sigma tested in the range from ", sigmafrom, " to ", sigmato, ". \n \n")))" and "stopifnot((mysigma > sigmafrom) & (mysigma < sigmato))" to model_gpm.
 
 # Top ---------------------------------------------------------------------
 
@@ -81,17 +82,10 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
 
   myols_data <- myols[[5]]
 
-
 # GPM model ---------------------------------------------------------------
 
   mygpm <- model_gpm(mydf = mygpm_df, myresponse = myresponse_gpm, myterms = myterms, sigmafrom = sigmafrom, sigmato= sigmato, sigmaby = sigmaby, myfolds = myfolds, myseed1 = myseed1, myseed2 = myseed2)
   print(mygpm)
-
-  mysigma <- as.numeric(mygpm[["bestTune"]][["sigma"]])
-
-  cat(yellow(paste0("Sigma = ", mysigma, " produced the smallest value of RMSE out of all the values of sigma tested in the range from ", sigmafrom, " to ", sigmato, ". \n \n")))
-
-  stopifnot((mysigma > sigmafrom) & (mysigma < sigmato))
 
 # Prediction ----------------------------
 
@@ -158,7 +152,6 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   myoutputfile <- paste0(datestring, "_", myinputspreadsheetprefix, "_outputs.xlsx")
 
   saveWorkbook(wb, file = myoutputfile, overwrite = TRUE)
-
 
   # tail ------------------------------------------------------------
 
