@@ -10,6 +10,8 @@ mcr(myfilename = NULL, myseed = 12345L, nsims = 1000)
 \item{myfilename}{is the name of the input Excel file}
 
 \item{myseed}{the random number seed to be used}
+
+\item{nsims}{the desired number of Monte Carlo simulations}
 }
 \value{
 
