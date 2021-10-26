@@ -4,10 +4,12 @@
 \alias{mcr}
 \title{monte carlo simulation using mc2d}
 \usage{
-mcr(myfilename = NULL, myseed = 12345L, nsims = 1000)
+mcr(myfilename = NULL, mycorrmatfilename = NULL, myseed = 12345L, nsims = 1000)
 }
 \arguments{
-\item{myfilename}{is the name of the input Excel file}
+\item{myfilename}{is the name of the main input Excel file}
+
+\item{mycorrmatfilename}{is the name of an input Excel file containing a desired correlation matrix (this is optional).}
 
 \item{myseed}{the random number seed to be used}
 
@@ -32,10 +34,16 @@ The input spreadsheet should have only one sheet with the following columns and 
 \item Distribution (character) - Uniform, Triangular, or PERT.
 \item Shape (numeric) - only needed if distribution is "PERT"
 }
+
+If specified, the file "mycorrmatfilename" with the correlation matrix should have only one sheet and the variables should be named "V1", "V2", ..., "VN" for N variables.
 }
 \examples{
 myinputfile <- system.file("extdata", "risk_variable_distributions.xlsx", package = "humblr")
 mytest1 <- mcr(myinputfile, nsims = 1000, myseed = 12345L)
 mytest1
+
+mycorrmatfile <- system.file("extdata", "correlation_matrix.xlsx", package = "humblr")
+mytest2 <- mcr(myinputfile, mycorrmatfilename = mycorrmatfile, nsims = 1000, myseed = 12345L)
+mytest2
 
 }

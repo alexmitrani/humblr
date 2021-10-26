@@ -1,6 +1,7 @@
 # Version history
 # 20211025 v1 01 by Alex Mitrani.  First version.
 # 20211026 v1 02 by Alex Mitrani.  Refined code to add variable names to the output dataframe. Added " mydf <- as.data.frame(mydf)" and related lines.  
+# 20211026 v1 03 by Alex Mitrani.  Added functionality to correlate the variables according to a correlation matrix provided as an input file.  
 
 #' @name mcr
 #' @title monte carlo simulation using mc2d
@@ -15,6 +16,8 @@
 #' - Maximum (numeric)
 #' - Distribution (character) - Uniform, Triangular, or PERT.
 #' - Shape (numeric) - only needed if distribution is "PERT"
+#' 
+#' If specified, the file "mycorrmatfilename" with the correlation matrix should have only one sheet and the variables should be named "V1", "V2", ..., "VN" for N variables.  
 #'
 #' @import tidyverse
 #' @import crayon
@@ -22,7 +25,8 @@
 #' @import openxlsx
 #' @import mc2d
 #'
-#' @param myfilename is the name of the input Excel file
+#' @param myfilename is the name of the main input Excel file
+#' @param mycorrmatfilename is the name of an input Excel file containing a desired correlation matrix (this is optional).
 #' @param myseed the random number seed to be used
 #' @param nsims the desired number of Monte Carlo simulations
 #'
@@ -33,10 +37,14 @@
 #' myinputfile <- system.file("extdata", "risk_variable_distributions.xlsx", package = "humblr")
 #' mytest1 <- mcr(myinputfile, nsims = 1000, myseed = 12345L)
 #' mytest1
+#' 
+#' mycorrmatfile <- system.file("extdata", "correlation_matrix.xlsx", package = "humblr")
+#' mytest2 <- mcr(myinputfile, mycorrmatfilename = mycorrmatfile, nsims = 1000, myseed = 12345L)
+#' mytest2
 #'
 
 
-mcr <- function(myfilename = NULL, myseed = 12345L, nsims = 1000) {
+mcr <- function(myfilename = NULL, mycorrmatfilename = NULL, myseed = 12345L, nsims = 1000) {
   
   datestring <- datestampr(myusername=TRUE)
   now1 <- Sys.time()
@@ -57,13 +65,20 @@ mcr <- function(myfilename = NULL, myseed = 12345L, nsims = 1000) {
 
   ndvar(nsims)  
   
+  if (is.null(myseed)==TRUE) {
+    
+    myseed <- round(100000*runif(1))
+    
+  }  
+  
   # import table with parameters of the distributions
   mydistributions <- read_excel(myfilename)
   nvar <- nrow(mydistributions)
   
-  if (is.null(myseed)==TRUE) {
+  # import the correlation matrix
+  if(is.null(mycorrmatfilename)==FALSE) {
     
-    myseed <- round(100000*runif(1))
+    mycorrmat <- as.matrix(read_excel(mycorrmatfilename))
     
   }
   
@@ -158,6 +173,36 @@ mcr <- function(myfilename = NULL, myseed = 12345L, nsims = 1000) {
     
   }
   
+  # to apply any correlation structure that might have been requested
+  
+  if(is.null(mycorrmatfilename)==FALSE) {
+    
+    matc <- cornode(mydf, target=mycorrmat, outrank=TRUE)
+    
+    for (myvar in 1:nvar) {
+      
+      myvarname <- paste0("V", myvar)
+      test <- mydf[matc[,myvar], myvar]
+      
+      assign(eval(myvarname), test)
+      
+      if(myvar==1) {
+        
+        mydf2 <- get(eval(myvarname))
+        
+      } else {
+        
+        mydf2 <- cbind(mydf2, get(eval(myvarname)))  
+        
+      }      
+      
+    }  
+    
+    colnames(mydf2)[1] <- "V1"
+    mydf <- mydf2
+    
+  }
+  
   mydf <- as.data.frame(mydf)
   
   for (myvar in 1:nvar) {
@@ -178,6 +223,13 @@ mcr <- function(myfilename = NULL, myseed = 12345L, nsims = 1000) {
   addWorksheet(wb, sheetname)
   writeData(wb, sheetname, mydistributions)
   
+  if(is.null(mycorrmatfilename)==FALSE) {
+    
+    sheetname <- "corrmat"
+    addWorksheet(wb, sheetname)
+    writeData(wb, sheetname, mycorrmat)
+    
+  }  
   
   sheetname <- "mc_variables"
   addWorksheet(wb, sheetname)
