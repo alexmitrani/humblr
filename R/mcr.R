@@ -1,5 +1,6 @@
 # Version history
 # 20211025 v1 01 by Alex Mitrani.  First version.
+# 20211026 v1 02 by Alex Mitrani.  Refined code to add variable names to the output dataframe. Added " mydf <- as.data.frame(mydf)" and related lines.  
 
 #' @name mcr
 #' @title monte carlo simulation using mc2d
@@ -23,6 +24,7 @@
 #'
 #' @param myfilename is the name of the input Excel file
 #' @param myseed the random number seed to be used
+#' @param nsims the desired number of Monte Carlo simulations
 #'
 #' @return
 #' @export
@@ -37,7 +39,9 @@
 mcr <- function(myfilename = NULL, myseed = 12345L, nsims = 1000) {
   
   datestring <- datestampr(myusername=TRUE)
+  now1 <- Sys.time()
   logrun <- TRUE
+  
   
   if (logrun==TRUE) {
     
@@ -151,9 +155,19 @@ mcr <- function(myfilename = NULL, myseed = 12345L, nsims = 1000) {
     }
     
     colnames(mydf)[1] <- "V1"
-
     
   }
+  
+  mydf <- as.data.frame(mydf)
+  
+  for (myvar in 1:nvar) {
+    
+    mycode <- rlang::sym(paste0("codename", myvar))
+    myoldvarname <- paste0("V", myvar)
+    
+    names(mydf)[names(mydf)==myoldvarname] <- eval(mycode)
+    
+  }  
   
   # to export the results ---------------------------------
   
@@ -184,6 +198,13 @@ mcr <- function(myfilename = NULL, myseed = 12345L, nsims = 1000) {
   }
   
   print(gc())
+  
+  now2 <- Sys.time()
+  elapsed_time <- now2 - now1
+  
+  cat(yellow(paste0("\n \n", "Elapsed time: \n ")))
+  print(elapsed_time)
+  cat(yellow(paste0("\n \n")))
   
   return(mydf)
   
