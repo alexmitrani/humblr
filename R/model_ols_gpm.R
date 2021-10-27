@@ -15,6 +15,7 @@
 #' @param myinputspreadsheet is the name of the spreadsheet with the input data.
 #' @param myinputdatasheet the name of the sheet with the input data.
 #' @param mypredictionsheet (optional) the name of a sheet containing test data to which the model should be applied.
+#' @param mypredictiondf (optional) a dataframe to be used as a basis for predictions
 #' @param mytag a character string that will be used in the output file names.  #'
 #' @param myterms a character vector containing the names of the independent variables.
 #' @param sigmafrom the lower limit of the test range for sigma
@@ -35,7 +36,7 @@
 #' mytestmodel <- model_ols_gpm(myinputspreadsheet = myinputfile, myinputdatasheet = "data", mypredictionsheet = "prediction_tests", mytag = "model_ols_gpm_test", myresponse_ols = "depvar", myresponse_gpm = "residuals", myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10"), sigmafrom = 1, sigmato= 10, sigmaby = 1, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000)
 #'
 #'
-model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, mytag = NULL, mypredictionsheet = NULL, myresponse_ols = NULL, myresponse_gpm = "residuals", myterms = NULL, sigmafrom = 0.01, sigmato= 2, sigmaby = 0.01, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000) {
+model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, mypredictiondf = NULL, mytag = NULL, mypredictionsheet = NULL, myresponse_ols = NULL, myresponse_gpm = "residuals", myterms = NULL, sigmafrom = 0.01, sigmato= 2, sigmaby = 0.01, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000) {
 
 # Version register --------------------------------------------------------
 
@@ -44,6 +45,7 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   # 20211022 v1 03 by Alex Mitrani, put example back in.
   # 20211025 v1 04 by Alex Mitrani, Moved "cat(yellow(paste0("Sigma = ", mysigma, " produced the smallest value of RMSE out of all the values of sigma tested in the range from ", sigmafrom, " to ", sigmato, ". \n \n")))" and "stopifnot((mysigma > sigmafrom) & (mysigma < sigmato))" to model_gpm.
   # 20211025 v1 05 by Alex Mitrani, Added type = "response": "mutate(gpm_prediction = predict(mygpm, mypredictiondf, type = "response"))"
+  # 20211027 v1 06 by Alex Mitrani, Added mypredictiondf to the syntax: this argument can be used to pass in a dataframe to be used as a basis for predictions, and if this is done the results will be returned as the third element of the return list.  
 
 # Top ---------------------------------------------------------------------
 
@@ -134,7 +136,17 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
       mutate(id = row_number()) %>%
       relocate(id)
 
+  } else if (is.null(mypredictiondf) == FALSE) {
+    
+    mypredictiondf <- mypredictiondf %>%
+      mutate(ols_prediction = predict(myolsmodel, mypredictiondf)) %>%
+      mutate(gpm_prediction = predict(mygpm, mypredictiondf, type = "response")) %>%
+      mutate(prediction = ols_prediction + gpm_prediction) %>%
+      mutate(id = row_number()) %>%
+      relocate(id)
+    
   }
+  
 
 # Save results workbook -------------------------------------------------
 
@@ -167,7 +179,7 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   print(elapsed_time)
   cat(yellow(paste0("\n \n")))
 
-  returnlist <- list(myols, mygpm)
+  returnlist <- list(myols, mygpm, mypredictiondf)
 
   if (logrun==TRUE) {
     sink()

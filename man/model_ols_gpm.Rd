@@ -7,6 +7,7 @@
 model_ols_gpm(
   myinputspreadsheet = NULL,
   myinputdatasheet = NULL,
+  mypredictiondf = NULL,
   mytag = NULL,
   mypredictionsheet = NULL,
   myresponse_ols = NULL,
@@ -25,6 +26,8 @@ model_ols_gpm(
 \item{myinputspreadsheet}{is the name of the spreadsheet with the input data.}
 
 \item{myinputdatasheet}{the name of the sheet with the input data.}
+
+\item{mypredictiondf}{(optional) a dataframe to be used as a basis for predictions}
 
 \item{mytag}{a character string that will be used in the output file names.  #'}
 
