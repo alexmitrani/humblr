@@ -46,6 +46,7 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   # 20211025 v1 04 by Alex Mitrani, Moved "cat(yellow(paste0("Sigma = ", mysigma, " produced the smallest value of RMSE out of all the values of sigma tested in the range from ", sigmafrom, " to ", sigmato, ". \n \n")))" and "stopifnot((mysigma > sigmafrom) & (mysigma < sigmato))" to model_gpm.
   # 20211025 v1 05 by Alex Mitrani, Added type = "response": "mutate(gpm_prediction = predict(mygpm, mypredictiondf, type = "response"))"
   # 20211027 v1 06 by Alex Mitrani, Added mypredictiondf to the syntax: this argument can be used to pass in a dataframe to be used as a basis for predictions, and if this is done the results will be returned as the third element of the return list.  
+  # 20211028 v1 07 by Alex Mitrani, Added functionality to predict the residual using the optimal value of sigma, to include the standard deviation of the GPM component in the results, and to add the result of drawing randomly from the GPM distribution into the prediction.  
 
 # Top ---------------------------------------------------------------------
 
@@ -86,18 +87,32 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   myols_data <- myols[[5]]
 
 # GPM model ---------------------------------------------------------------
-
+  
   mygpm <- model_gpm(mydf = mygpm_df, myresponse = myresponse_gpm, myterms = myterms, sigmafrom = sigmafrom, sigmato= sigmato, sigmaby = sigmaby, myfolds = myfolds, myseed1 = myseed1, myseed2 = myseed2)
   print(mygpm)
+  
+  browser
 
 # Prediction ----------------------------
+  
+  
 
   myols_data <- myols_data %>%
     mutate(ols_prediction = predict(myolsmodel, myols_data)) %>%
-    mutate(gpm_prediction = predict(mygpm, myols_data)) %>%
-    mutate(ols_gpm_prediction = ols_prediction + gpm_prediction) %>%
+    mutate(gpm_mean = predict(mygpm, myols_data, type = "response")) %>%
+    mutate(gpm_sd = predict(mygpm, myols_data, type="sdeviation")) %>%
     mutate(id = row_number()) %>%
     relocate(id)
+  
+  mycases <- nrow(myols_data)
+  mymean <- as.vector(myols_data$gpm_mean)
+  mysd <- as.vector(myols_data$gpm_sd)
+  myrand <- runif(n = mycases)
+  gpm_resid <- qnorm(p = myrand, mean = mymean, sd = mysd)
+  myols_data <- cbind(myols_data, gpm_resid)
+  
+  myols_data <- myols_data %>%
+    mutate(ols_gpm_prediction = ols_prediction + gpm_mean + gpm_resid)
 
   myobservedresponse <- keepr(myinputdf, "id", myresponse_ols)
   myresponsedata <- keepr(myinputdf, myresponse_ols)
@@ -128,25 +143,44 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   if (is.null(mypredictionsheet) == FALSE) {
 
     mypredictiondf <- read_excel(myinputspreadsheet, sheet = mypredictionsheet)
-
+    
     mypredictiondf <- mypredictiondf %>%
       mutate(ols_prediction = predict(myolsmodel, mypredictiondf)) %>%
-      mutate(gpm_prediction = predict(mygpm, mypredictiondf, type = "response")) %>%
-      mutate(prediction = ols_prediction + gpm_prediction) %>%
+      mutate(gpm_mean = predict(mygpm, mypredictiondf, type = "response")) %>%
+      mutate(gpm_sd = predict(mygpm, mypredictiondf, type="sdeviation")) %>%
       mutate(id = row_number()) %>%
-      relocate(id)
+      relocate(id)  
+    
+    mycases <- nrow(mypredictiondf)
+    mymean <- as.vector(mypredictiondf$gpm_mean)
+    mysd <- as.vector(mypredictiondf$gpm_sd)
+    myrand <- runif(n = mycases)
+    gpm_resid <- qnorm(p = myrand, mean = mymean, sd = mysd)
+    myols_data <- cbind(mypredictiondf, gpm_resid)    
+    
+    mypredictiondf <- mypredictiondf %>%
+      mutate(prediction = ols_prediction + gpm_mean + gpm_resid)
 
   } else if (is.null(mypredictiondf) == FALSE) {
-    
+  
     mypredictiondf <- mypredictiondf %>%
       mutate(ols_prediction = predict(myolsmodel, mypredictiondf)) %>%
-      mutate(gpm_prediction = predict(mygpm, mypredictiondf, type = "response")) %>%
-      mutate(prediction = ols_prediction + gpm_prediction) %>%
+      mutate(gpm_mean = predict(mygpm, mypredictiondf, type = "response")) %>%
+      mutate(gpm_sd = predict(mygpm, mypredictiondf, type="sdeviation")) %>%
       mutate(id = row_number()) %>%
-      relocate(id)
+      relocate(id)  
+    
+    mycases <- nrow(mypredictiondf)
+    mymean <- as.vector(mypredictiondf$gpm_mean)
+    mysd <- as.vector(mypredictiondf$gpm_sd)
+    myrand <- runif(n = mycases)
+    gpm_resid <- qnorm(p = myrand, mean = mymean, sd = mysd)
+    mypredictiondf <- cbind(mypredictiondf, gpm_resid)    
+    
+    mypredictiondf <- mypredictiondf %>%
+      mutate(prediction = ols_prediction + gpm_mean + gpm_resid)
     
   }
-  
 
 # Save results workbook -------------------------------------------------
 
@@ -154,7 +188,7 @@ model_ols_gpm <- function(myinputspreadsheet = NULL, myinputdatasheet = NULL, my
   addWorksheet(wb, sheetname)
   writeData(wb, sheetname, myols_data)
 
-  if (is.null(mypredictionsheet) == FALSE) {
+  if (is.null(mypredictionsheet) == FALSE | is.null(mypredictiondf) == FALSE) {
 
     sheetname <- "predictions"
     addWorksheet(wb, sheetname)

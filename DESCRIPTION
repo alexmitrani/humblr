@@ -1,6 +1,6 @@
 Package: humblr
 Title: Provides a few humble tools for R.
-Version: 0.0.0.916
+Version: 0.0.0.917
 Authors@R: 
     person(given = "Alex",
            family = "Mitrani",

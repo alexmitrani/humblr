@@ -32,6 +32,7 @@ model_gpm <- function(mydf = NULL, myresponse = NULL, myterms = NULL, sigmafrom 
   # 20211022 v1 03 by Alex Mitrani, documented version.   
   # 20211025 v1 04 by Alex Mitrani, Added "myfinalmodel <- mymodel[["finalModel"]]" and "return(myfinalmodel)"
   # 20211025 v1 05 by Alex Mitrani, Moved in "cat(yellow(paste0("Sigma = ", mysigma, " produced the smallest value of RMSE out of all the values of sigma tested in the range from ", sigmafrom, " to ", sigmato, ". \n \n")))" and "stopifnot((mysigma > sigmafrom) & (mysigma < sigmato))" from model_ols_gpm.
+  # 20211028 v1 06 by Alex Mitrani, Changed line that defines final model: "myfinalmodel <- gausspr(x = myformula, data = mydf, type = "regression", kernel = "rbfdot", kpar = list(sigma = mysigma), variance.model = TRUE)"
 
 # Train model -------------------------------------------------------------
 
@@ -56,7 +57,9 @@ model_gpm <- function(mydf = NULL, myresponse = NULL, myterms = NULL, sigmafrom 
   
   stopifnot((mysigma > sigmafrom) & (mysigma < sigmato))
   
-  myfinalmodel <- mymodel[["finalModel"]]
+  myfinalmodel <- gausspr(x = myformula, data = mydf, type = "regression", kernel = "rbfdot", kpar = list(sigma = mysigma), variance.model = TRUE)
+  
+  # myfinalmodel <- mymodel[["finalModel"]]
   
 # Return results ----------------------------------------------------------
   
