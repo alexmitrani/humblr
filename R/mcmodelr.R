@@ -5,6 +5,7 @@
 #' @title monte carlo simulation function for use with mcr and model_ols_gpm
 #' @description takes model_ols_gpm, passes it input data produced with mcr, and passes back key results
 #'
+#' @import ggplot2
 #'
 #' @param myinputspreadsheet is the name of the spreadsheet with the input data.
 #' @param myinputdatasheet the name of the sheet with the input data.
