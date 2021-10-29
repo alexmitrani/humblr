@@ -1,5 +1,6 @@
 # Version history
 # 20211028 v1 01 by Alex Mitrani.  First version.
+# 20211028 v1 02 by Alex Mitrani.  Updated to include mygraphtextsize
 
 #' @name mcmodelr
 #' @title monte carlo simulation function for use with mcr and model_ols_gpm
@@ -63,9 +64,7 @@ mcmodelr <- function(nsims = NULL, myinputspreadsheet = NULL, myinputdatasheet =
   png(file = myplotfilename, width = mygraphsize, height = mygraphsize)
 
   print({
-    p <- ggplot(myprediction, aes(x = prediction, y = cumulative_proportion))
-    p + geom_line(size = 1)
-    p + theme(text = element_text(size = mygraphtextsize))
+    p <- ggplot(myprediction, aes(x = prediction, y = cumulative_proportion)) + geom_line(size = 1) + theme(text = element_text(size = mygraphtextsize))
   })
 
   dev.off()
