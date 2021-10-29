@@ -18,7 +18,8 @@ mcmodelr(
   myfolds = NULL,
   myseed1 = NULL,
   myseed2 = NULL,
-  mygraphsize = NULL,
+  mygraphsize = 1000,
+  mygraphtextsize = 10,
   mytag = NULL
 )
 }
@@ -51,6 +52,8 @@ mcmodelr(
 
 \item{mygraphsize}{the pixel dimension for the output graphs}
 
+\item{mygraphtextsize}{the size of all text elements on the graph.}
+
 \item{mytag}{a character string that will be used in the output file names.  #'}
 }
 \value{
@@ -72,7 +75,7 @@ mytest2 <- mcr(myinputfile, mycorrmatfilename = mycorrmatfile, nsims = nsims, my
 mytest2
 
 myinputfile <- system.file("extdata", "model_ols_gpm_test.xlsx", package = "humblr")
-mymodel_results <- mcmodelr(nsims = nsims, myinputspreadsheet = myinputfile, myinputdatasheet = "data", mypredictiondf = mytest2, myresponse_ols = "depvar", myresponse_gpm = "residuals", myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10"), sigmafrom = 1, sigmato= 10, sigmaby = 1, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000, mytag = "mymodel")
+mymodel_results <- mcmodelr(nsims = nsims, myinputspreadsheet = myinputfile, myinputdatasheet = "data", mypredictiondf = mytest2, myresponse_ols = "depvar", myresponse_gpm = "residuals", myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10"), sigmafrom = 1, sigmato= 10, sigmaby = 1, myfolds = 10, myseed1 = 123, myseed2 = 456, mygraphsize = 1000, mygraphtextsize = 20, mytag = "mymodel")
 
 
 
