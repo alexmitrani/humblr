@@ -3,6 +3,7 @@
 export(chunkr)
 export(compressr)
 export(datestampr)
+export(diffr)
 export(dropr)
 export(hypercuber)
 export(keepr)

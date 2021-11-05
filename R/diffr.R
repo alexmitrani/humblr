@@ -4,7 +4,6 @@
 #' @description It then proceeds to calculate a z-statistic: myz <- (mycoefdiff)/myse
 #' @description A z-statistic of 1.96 or greater would indicate that the difference between the coefficients is significant at the 95% level of confidence.
 #'
-#' @import mlogit
 #' @import crayon
 #'
 #' @param mymodel model to be used.
