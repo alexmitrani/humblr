@@ -3,7 +3,11 @@
 #' @description The function finds the standard error of the difference between the two coefficients in terms of their variances and their covariance: myse <- (sqrt(myvar1 + myvar2 - 2*mycov))
 #' @description It then proceeds to calculate a z-statistic: myz <- (mycoefdiff)/myse
 #' @description A z-statistic of 1.96 or greater would indicate that the difference between the coefficients is significant at the 95% level of confidence.
+#' @description The index numbers are based on the model coefficient table that comes straight out of the model, with no sorting.
+#' @description The function will return a one-row dataframe with the following columns: var1, var2, coefindex1, coefindex2, mycoef1, mycoef2, mycoefdiff, myz, myp, lower95ci, upper95ci
+#' @description A coefficient index of 0 will be interpreted as referring to the omitted constant.
 #'
+#' @import mlogit
 #' @import crayon
 #'
 #' @param mymodel model to be used.
@@ -14,41 +18,82 @@
 #' @export
 #'
 #' @examples
-#' myinputfile <- system.file("extdata", "model_ols_gpm_test.xlsx", package = "humblr")
-#' myinputdf <- read_excel(myinputfile, sheet = "data")
-#' myresponse_ols = "depvar"
-#' myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10")
-#' myformula <- reformulate(termlabels = myterms, response = myresponse_ols)
-#' myolsmodel <- lm(myformula, data = myinputdf)
-#' mytest <- diffr(mymodel = myolsmodel, coefindex1 = 1, coefindex2 = 2)
+#' mytest <- diffr(mymodel = ml.Repeatr4, coefindex1 = 1, coefindex2 = 2)
 #'
-diffr <- function(mymodel = myolsmodel, coefindex1 = NULL, coefindex2 = NULL) {
+diffr <- function(mymodel = NULL, coefindex1 = NULL, coefindex2 = NULL) {
 
   # Source: https://stats.stackexchange.com/questions/59085/how-to-test-for-simultaneous-equality-of-choosen-coefficients-in-logit-or-probit
 
-  mycoefs <- as.matrix(mymodel[["coefficients"]])
-  myvcovmat <- as.matrix(vcov(mymodel))
+  mycoefs <- as.data.frame(mymodel[["coefficients"]])
 
-  mycoef1 <- as.numeric(mycoefs[coefindex1,])
+  mycoefs$varname <- row.names(mycoefs)
+
+  myvcovmat <- as.data.frame(vcov(mymodel))
+
+  if (coefindex1==0) {
+
+    mycoef1 <- 0
+    var1 <- "(Intercept):1"
+
+  } else {
+
+    mycoef1 <- as.numeric(mycoefs[coefindex1,1])
+    var1 <- mycoefs[coefindex1,2]
+
+  }
 
   cat(yellow(paste0("\n \n",  "First coefficient: ", mycoef1, " \n \n")))
 
-  mycoef2 <- as.numeric(mycoefs[coefindex2,])
+  if (coefindex2==0) {
+
+    mycoef2 <- 0
+    var2 <- "(Intercept):1"
+
+  } else {
+
+    mycoef2 <- as.numeric(mycoefs[coefindex2,1])
+    var2 <- mycoefs[coefindex2,2]
+
+  }
 
   cat(yellow(paste0("Second coefficient: ", mycoef2, " \n \n")))
 
   mycoefdiff <- as.numeric(mycoef1 - mycoef2)
   cat(yellow(paste0("Difference to be tested: ", mycoefdiff, " \n \n")))
 
-  myvar1 <- as.numeric(myvcovmat[coefindex1,coefindex1])
+  if (coefindex1==0) {
+
+    myvar1 <- 0
+
+  } else {
+
+    myvar1 <- as.numeric(myvcovmat[coefindex1,coefindex1])
+
+  }
 
   cat(yellow(paste0("Variance of the first coefficient: ", myvar1, " \n \n")))
 
-  myvar2 <- as.numeric(myvcovmat[coefindex2,coefindex2])
+  if (coefindex2==0) {
+
+    myvar2 <- 0
+
+  } else {
+
+    myvar2 <- as.numeric(myvcovmat[coefindex2,coefindex2])
+
+  }
 
   cat(yellow(paste0("Variance of the second coefficient: ", myvar2, " \n \n")))
 
-  mycov <- as.numeric(myvcovmat[coefindex1,coefindex2])
+  if (coefindex1==0 | coefindex2==0) {
+
+    mycov <- 0
+
+  } else {
+
+    mycov <- as.numeric(myvcovmat[coefindex1,coefindex2])
+
+  }
 
   cat(yellow(paste0("Covariance of the two coefficients: ", mycov, " \n \n")))
 
@@ -64,14 +109,14 @@ diffr <- function(mymodel = myolsmodel, coefindex1 = NULL, coefindex2 = NULL) {
 
   lower95ci <- mycoefdiff - 1.96*myse
 
-  cat(yellow(paste0("Lower boundary of 95% confidence interval: ", lower95ci, " \n \n")))
+  cat(yellow(paste0("Lower boundary of 95% confidence interval of the difference between the two coefficients: ", lower95ci, " \n \n")))
 
   upper95ci <- mycoefdiff + 1.96*myse
 
-  cat(yellow(paste0("Upper boundary of 95% confidence interval: ", upper95ci, " \n \n")))
+  cat(yellow(paste0("Upper boundary of 95% confidence interval of the difference between the two coefficients: ", upper95ci, " \n \n")))
 
-  myreturnlist <- list(mycoefdiff, myz, myp, lower95ci, upper95ci)
+  myreturndf <- data.frame(var1, var2, coefindex1, coefindex2, mycoef1, mycoef2, mycoefdiff, myz, myp, lower95ci, upper95ci)
 
-  return(myreturnlist)
+  return(myreturndf)
 
 }
