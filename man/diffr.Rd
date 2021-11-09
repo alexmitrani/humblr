@@ -4,7 +4,7 @@
 \alias{diffr}
 \title{Tests whether differences between pairs of model parameters are significant or not.}
 \usage{
-diffr(mymodel = myolsmodel, coefindex1 = NULL, coefindex2 = NULL)
+diffr(mymodel = NULL, coefindex1 = NULL, coefindex2 = NULL)
 }
 \arguments{
 \item{mymodel}{model to be used.}
@@ -22,14 +22,14 @@ The function finds the standard error of the difference between the two coeffici
 It then proceeds to calculate a z-statistic: myz <- (mycoefdiff)/myse
 
 A z-statistic of 1.96 or greater would indicate that the difference between the coefficients is significant at the 95\% level of confidence.
+
+The index numbers are based on the model coefficient table that comes straight out of the model, with no sorting.
+
+The function will return a one-row dataframe with the following columns: var1, var2, coefindex1, coefindex2, mycoef1, mycoef2, mycoefdiff, myz, myp, lower95ci, upper95ci
+
+A coefficient index of 0 will be interpreted as referring to the omitted constant.
 }
 \examples{
-myinputfile <- system.file("extdata", "model_ols_gpm_test.xlsx", package = "humblr")
-myinputdf <- read_excel(myinputfile, sheet = "data")
-myresponse_ols = "depvar"
-myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10")
-myformula <- reformulate(termlabels = myterms, response = myresponse_ols)
-myolsmodel <- lm(myformula, data = myinputdf)
-mytest <- diffr(mymodel = myolsmodel, coefindex1 = 1, coefindex2 = 2)
+mytest <- diffr(mymodel = ml.Repeatr4, coefindex1 = 1, coefindex2 = 2)
 
 }
