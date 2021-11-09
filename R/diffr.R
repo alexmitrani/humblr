@@ -18,7 +18,13 @@
 #' @export
 #'
 #' @examples
-#' mytest <- diffr(mymodel = ml.Repeatr4, coefindex1 = 1, coefindex2 = 2)
+#' myinputfile <- system.file("extdata", "model_ols_gpm_test.xlsx", package = "humblr")
+#' myinputdf <- read_excel(myinputfile, sheet = "data")
+#' myresponse_ols = "depvar"
+#' myterms = c("var2",	"var3",	"var4",	"var5",	"var6",	"var7",	"var8",	"var9",	"var10")
+#' myformula <- reformulate(termlabels = myterms, response = myresponse_ols)
+#' myolsmodel <- lm(myformula, data = myinputdf)
+#' mytest <- diffr(mymodel = myolsmodel, coefindex1 = 1, coefindex2 = 2)
 #'
 diffr <- function(mymodel = NULL, coefindex1 = NULL, coefindex2 = NULL) {
 
